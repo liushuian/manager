@@ -33,11 +33,11 @@ export default {
       rules: {
         username: [
           { required: true, message: "请输入用户名", trigger: "blur" },
-          { min: 3, max: 8, message: "长度在 3 到 8 个字符", trigger: "change" }
+          { min: 3, max: 10, message: "长度在 3 到 10 个字符", trigger: "change" }
         ],
         password: [
           { required: true, message: "请输入密码", trigger: "blur" },
-          { min: 6, max: 16, message: "长度在 3 到 16 个字符", trigger: "change" }
+          { min: 6, max: 16, message: "长度在 6 到 16 个字符", trigger: "change" }
         ]
       }
     };
@@ -46,9 +46,17 @@ export default {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            // alert('submit!');
+            //数据正确
+            this.$http.post('login',this.formData).then(res=>{
+                if(res.data.meta.status === 400){
+                    this.$message.error('用户名或密码错误');//res.data.meta.msg 提示错误的部分信息
+                }else{
+                    this.$message.success(res.data.meta.msg);
+                    window.sessionStorage.setItem('token',res.data.data.token)
+                    this.$router.push('/');
+                }
+            })
           } else {
-            // console.log('error submit!!');
             this.$message.error('请输入正确的用户名和密码');
             return false;
           }
@@ -66,9 +74,8 @@ body {
   margin: 0;
   padding: 0;
 }
-body > div {
+body > div:first-of-type {
   height: 100%;
-  width: 100%;
 }
 .login {
   display: flex;
@@ -89,4 +96,5 @@ body > div {
 #btn-login {
   width: 100%;
 }
+/* 限定弹框的大小 */
 </style>
