@@ -25,15 +25,6 @@
 </template>
 <script>
 export default {
-  beforeCreate() {
-    if(window.sessionStorage.getItem('token')){
-        //有token,表明已经登录过
-    }else{//没有token,表明还没登录,返回登录页
-        this.$message.warning('请登录')
-        this.$router.push('/login');
-          
-      }
-  },
   methods: {
     logout() {
       this.$confirm("你是要退出么?", "提示", {

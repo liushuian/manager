@@ -23,6 +23,17 @@ let routes = [
 let router = new VueRouter({
     routes
 })
-
+router.beforeEach((to, from, next) => {
+    if(to.path == '/login'){
+        next()
+    }else{
+        if(window.sessionStorage.getItem('token')){
+            next()
+        }else{
+            Vue.prototype.$message.warning('请先登录')
+            next('/login')
+        }
+    }
+})
 //暴露/导出路由
 export default router;
