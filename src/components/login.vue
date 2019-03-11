@@ -43,15 +43,16 @@ export default {
     };
   },
    methods: {
+     //提交数据前验证
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             //数据正确
             this.$http.post('login',this.formData).then(res=>{
                 if(res.data.meta.status === 400){
-                    this.$message.error('用户名或密码错误');//res.data.meta.msg 提示错误的部分信息
+                    // this.$message.error('用户名或密码错误');//res.data.meta.msg 提示错误的部分信息
                 }else{
-                    this.$message.success(res.data.meta.msg);
+                    // this.$message.success(res.data.meta.msg);
                     window.sessionStorage.setItem('token',res.data.data.token)
                     this.$router.push('/');
                 }
