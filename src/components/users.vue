@@ -37,7 +37,7 @@
       <el-table-column prop="mobile" label="电话"></el-table-column>
       <el-table-column label="用户状态">
         <template slot-scope="scope">
-          <el-switch v-model="scope.row.mg_state" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+          <el-switch v-model="scope.row.mg_state" @change="changestatus(scope.row)" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
         </template>
       </el-table-column>
       <el-table-column label="操作">
@@ -49,7 +49,13 @@
             plain
             size="mini"
           ></el-button>
-          <el-button type="danger" icon="el-icon-delete" plain size="mini"></el-button>
+          <el-button
+            type="danger"
+            icon="el-icon-delete"
+            @click="handleDelete(scope.row)"
+            plain
+            size="mini"
+          ></el-button>
           <el-button type="success" icon="el-icon-check" plain size="mini"></el-button>
         </template>
       </el-table-column>
@@ -137,8 +143,34 @@ export default {
     };
   },
   methods: {
-    handleEdit(index, row) {
-      console.log(index, row);
+    //修改状态
+    async changestatus(row){
+      await this.$http.put(`users/${row.id}/state/${row.mg_state}`);
+    },
+    //编辑数据
+    // handleEdit(index, row) {
+    //   console.log(index, row);
+    // },
+    //删除数据
+    handleDelete(row) {
+      this.$confirm("是否要删除数据?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
+          //确认删除
+          let res = await this.$http.delete(`users/${row.id}`);
+          if (res.data.meta.status == 200) {
+            this.search();
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
     },
     //查询数据
     //async await es7语法修饰代码 使得异步执行类似同步顺序执行
@@ -153,17 +185,17 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(async valid => {
         if (valid) {
-            let res = await this.$http.post('users',this.addForm,{
-                // headers:{Authorization:window.sessionStorage.getItem('token')},
-            })
-            // console.log(res);
-            if(res.data.meta.status == '201'){
-                this.search();
-                this.addFormVisible = false;
-            }
+          let res = await this.$http.post("users", this.addForm, {
+            // headers:{Authorization:window.sessionStorage.getItem('token')},
+          });
+          // console.log(res);
+          if (res.data.meta.status == "201") {
+            this.search();
+            this.addFormVisible = false;
+          }
         } else {
-        //   console.log("error submit!!");
-        //   this.$message.warning('请输入正确的数据')  
+          //   console.log("error submit!!");
+          //   this.$message.warning('请输入正确的数据')
           return false;
         }
       });
