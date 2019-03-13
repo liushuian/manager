@@ -7,6 +7,7 @@ Vue.use(VueRouter);
 import login from '../components/login.vue'
 import index from '../components/index.vue'
 import users from '../components/users.vue'
+import roles from '../components/roles.vue'
 //路由规则
 let routes = [
     {
@@ -20,6 +21,10 @@ let routes = [
             {
                 path:'users',
                 component:users
+            },
+            {
+                path:'roles',
+                component:roles
             }
         ]
     }

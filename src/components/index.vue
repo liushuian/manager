@@ -24,43 +24,12 @@
           router
           class="el-menu-vertical-demo"
         >
-          <el-submenu index="1">
+          <el-submenu :index="index+''" v-for="(item,index) in menuList" :key="item.children.id">
             <template slot="title">
               <i class="el-icon-location"></i>
-              <span>用户管理</span>
+              <span>{{item.authName}}</span>
             </template>
-              <el-menu-item index="users"><span class="el-icon-menu"></span>用户列表</el-menu-item>
-          </el-submenu>
-          <el-submenu index="2">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>权限管理</span>
-            </template>
-              <el-menu-item index=""><span class="el-icon-menu"></span>角色列表</el-menu-item>
-              <el-menu-item index=""><span class="el-icon-menu"></span>权限列表</el-menu-item>
-          </el-submenu>
-          <el-submenu index="3">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>商品管理</span>
-            </template>
-              <el-menu-item index=""><span class="el-icon-menu"></span>商品列表</el-menu-item>
-              <el-menu-item index=""><span class="el-icon-menu"></span>分类参数</el-menu-item>
-              <el-menu-item index=""><span class="el-icon-menu"></span>商品分类</el-menu-item>
-          </el-submenu>
-          <el-submenu index="4">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>订单管理</span>
-            </template>
-              <el-menu-item index=""><span class="el-icon-menu"></span>订单列表</el-menu-item>
-          </el-submenu>
-          <el-submenu index="5">
-            <template slot="title">
-              <i class="el-icon-location"></i>
-              <span>数据统计</span>
-            </template>
-              <el-menu-item index=""><span class="el-icon-menu"></span>数据报表</el-menu-item>
+              <el-menu-item index="users" v-for="it in item.children" :index="'/'+it.path"><span class="el-icon-menu"></span>{{it.authName}}</el-menu-item>
           </el-submenu>
         </el-menu>
       </el-aside>
@@ -72,6 +41,11 @@
 </template>
 <script>
 export default {
+  data(){
+    return{
+      menuList:[]
+    }
+  },
   methods: {
     logout() {
       this.$confirm("你是要退出么?", "提示", {
@@ -89,8 +63,14 @@ export default {
             message: "请继续你的骚操作!"
           });
         });
-    }
-  }
+    },
+    
+  },
+  async created() {
+    let res = await this.$http.get('menus');
+    // console.log(res);
+    this.menuList = res.data.data;
+  },
 };
 </script>
 <style>

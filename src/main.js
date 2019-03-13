@@ -15,6 +15,11 @@ Vue.use(ElementUI);
 import http from './lib/http'
 Vue.use(http);
 
+//全局导入 面包屑组件 注册 import里的mybreadxie是随便起的
+import mybreadxie from './components/mybreadcrumb.vue'
+Vue.component('mybreadxie',mybreadxie);
+
+
 new Vue({
   render: h => h(App),
   router
