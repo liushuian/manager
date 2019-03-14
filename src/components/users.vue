@@ -280,7 +280,7 @@ export default {
           }else if(formName == "roleForm"){
             res = await this.$http.put(`users/${this.roleForm.id}/role`,{rid:this.roleForm.role_name});
           }
-          //201--添加  200--编辑
+          //201--添加  200--编辑,角色
           if (res.data.meta.status == "201" || res.data.meta.status == "200") {
             //局部刷新
             this.search();

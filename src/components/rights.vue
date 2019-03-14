@@ -1,9 +1,7 @@
 <template>
   <div>
     <!-- 面包屑 -->
-    <mybreadxie second="权限管理" third="角色列表"></mybreadxie>
-    <!-- 按钮 -->
-    <el-button type="success" @click="addFormVisible=true" plain>添加用户</el-button>
+    <mybreadxie second="权限管理" third="权限列表"></mybreadxie>
     <!-- 表格 -->
     <el-table :data="tableData" style="width: 100%">
       <el-table-column type="index"></el-table-column>

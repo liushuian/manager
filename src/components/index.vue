@@ -19,17 +19,16 @@
     </el-header>
     <el-container>
       <el-aside class="index-aside" width="200px">
-        <el-menu
-          default-active="2"
-          router
-          class="el-menu-vertical-demo"
-        >
+        <el-menu default-active="2" router class="el-menu-vertical-demo">
           <el-submenu :index="index+''" v-for="(item,index) in menuList" :key="item.children.id">
             <template slot="title">
               <i class="el-icon-location"></i>
               <span>{{item.authName}}</span>
             </template>
-              <el-menu-item index="users" v-for="it in item.children" :index="'/'+it.path"><span class="el-icon-menu"></span>{{it.authName}}</el-menu-item>
+            <el-menu-item index="users" v-for="it in item.children" :index="'/'+it.path">
+              <span class="el-icon-menu"></span>
+              {{it.authName}}
+            </el-menu-item>
           </el-submenu>
         </el-menu>
       </el-aside>
@@ -41,10 +40,10 @@
 </template>
 <script>
 export default {
-  data(){
-    return{
-      menuList:[]
-    }
+  data() {
+    return {
+      menuList: []
+    };
   },
   methods: {
     logout() {
@@ -63,14 +62,13 @@ export default {
             message: "请继续你的骚操作!"
           });
         });
-    },
-    
+    }
   },
   async created() {
-    let res = await this.$http.get('menus');
+    let res = await this.$http.get("menus");
     // console.log(res);
     this.menuList = res.data.data;
-  },
+  }
 };
 </script>
 <style>
