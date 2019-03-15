@@ -8,7 +8,7 @@
 </template>
 <script>
 import echarts from "echarts";
-
+import $ from "jquery";
 export default {
   data() {
     return {
@@ -43,7 +43,7 @@ export default {
           {
             type: "category",
             boundaryGap: false,
-            data: ["2017-12-27", "2017-12-28", "2017-12-29", "2017-12-30", "2017-12-31", "2018-1-1"]
+            data: []
           }
         ],
         yAxis: [
@@ -51,53 +51,21 @@ export default {
             type: "value"
           }
         ],
-        series: [
-          {
-            name: "华东",
-            type: "line",
-            stack: "总量",
-            areaStyle: {},
-            data: [2999, 3111, 4100, 3565, 3528,6000]
-          },
-          {
-            name: "华南",
-            type: "line",
-            stack: "总量",
-            areaStyle: {},
-            data: [5090, 2500, 3400, 6000, 6400,7800]
-          },
-          {
-            name: "华北",
-            type: "line",
-            stack: "总量",
-            areaStyle: {},
-            data: [6888, 4000, 8010, 12321, 13928,12984]
-          },
-          {
-            name: "西部",
-            type: "line",
-            stack: "总量",
-            areaStyle: { normal: {} },
-            data: [9991, 4130, 7777, 12903, 13098,14028]
-          },
-          {
-            name: "其他",
-            type: "line",
-            stack: "总量",
-            label: {
-              normal: {
-                show: true,
-                position: "top"
-              }
-            },
-            areaStyle: { normal: {} },
-            data: [15212, 5800, 13928, 14821, 15982,14091]
-          }
-        ]
+        series: []
       }
     };
   },
-  mounted() {
+  async mounted() {
+    
+    let res = await this.$http.get('reports/type/1');
+    //遍历服务器传回来的值并赋值给本地option
+    for(const key in res.data.data){
+      this.option[key] = res.data.data[key];
+    }
+    //X轴从左边开始
+    this.option.xAxis[0].boundaryGap = false
+    //合并,参数1--deep(是否深度合并,默认false),参数2--target(目标对象),参数3--obj(被合并的第一个对象)
+    // $.extend(true,this.option,res.data.data);
     // 基于准备好的dom，初始化echarts实例
     let myChart = echarts.init(document.querySelector("#main"));
     // 使用刚指定的配置项和数据显示图表。
@@ -106,9 +74,9 @@ export default {
 };
 </script>
 <style>
-#main{
-    background-color: #fff;
-}
+  #main{
+      background-color: #fff;
+  }
 </style>
 
 
